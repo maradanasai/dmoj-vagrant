@@ -80,6 +80,7 @@ cp ./config/bridged.conf /etc/supervisor/conf.d
 cp ./config/celery.conf /etc/supervisor/conf.d
 cp ./config/wsevent.conf /etc/supervisor/conf.d
 cp ./config/judge.conf /etc/supervisor/conf.d
+cp ./config/judge_rest.conf /etc/supervisor/conf.d
 
 #Setting up nginx
 apt -y install nginx
@@ -92,6 +93,15 @@ npm install qu ws simplesets
 #Setting up Judge
 apt -y install build-essential libseccomp-dev openjdk-8-jdk-headless
 ../venv/bin/pip3 install dmoj
+
+#Setting up REST Api Judge
+cd ..
+git clone --recursive https://github.com/maradanasai/judge-server.git
+cd judge-server
+git checkout judge_restapi
+python3 -m venv venv
+./venv/bin/pip3 install -r requirements.txt
+./venv/bin/pip3 install -e .
 
 #Reload all configuration changes
 supervisorctl update
